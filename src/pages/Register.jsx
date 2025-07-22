@@ -39,14 +39,14 @@ const Register = () => {
         }
       );
       if (!response.ok) {
-        throw new Error("Une erreur est survenue lors de l'inscription.");
+        throw new Error(error.message || `Erreur HTTP: ${response.status}`);
       }
       window.location.href = "/connexion";
     } catch (error) {
-      setError("Une erreur est survenue lors de l'inscription.");
-      console.error("Erreur :", error.message);
+      setError("Une erreur est survenue lors de l'inscription. Vérifiez que le mot de passe contient plus de 8 caractères.");
+      console.error("Erreur JS :", error.message);
     }
-  };
+  }
 
   return (
     <Container className="d-flex justify-content-center align-items-center min-vh-100">
@@ -107,5 +107,4 @@ const Register = () => {
     </Container>
   );
 };
-
 export default Register;
