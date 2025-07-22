@@ -1,6 +1,13 @@
 import { useState } from "react";
-import { Form, Button, Container, Card, Row, Col, Alert } from "react-bootstrap";
-
+import {
+  Form,
+  Button,
+  Container,
+  Card,
+  Row,
+  Col,
+  Alert,
+} from "react-bootstrap";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -10,7 +17,6 @@ const Register = () => {
   });
   const [error, setError] = useState(null);
 
-  
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -18,30 +24,30 @@ const Register = () => {
     });
   };
 
-
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  setError(null);
-  try {
-    const response = await fetch("https://offers-api.digistos.com/api/auth/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
-    if (!response.ok) {
-      const errorData = await response.json();
-      setError(errorData.message || `Erreur HTTP: ${response.status}`);
-      return;
+    e.preventDefault();
+    try {
+      const response = await fetch(
+        "https://offers-api.digistos.com/api/auth/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+      if (!response.ok) {
+        setError("Une erreur est survenue lors de l'inscription.");
+        return;
+      }
+      window.location.href = "/connexion";
+    } catch (error) {
+      setError("Une erreur est survenue lors de l'inscription.");
+      console.error("Erreur :", error.message);
     }
-    window.location.href = "/connexion";
-  } catch (error) {
-    setError(error.message || "Une erreur est survenue lors de l'inscription.");
-    console.error("Erreur :", error.message);
-  }
-};
+  };
 
   return (
     <Container className="d-flex justify-content-center align-items-center min-vh-100">
@@ -59,8 +65,9 @@ const Register = () => {
               </Alert>
             )}
             {!error && (
-              <Alert variant="success" dismissible onClose={() => setShowSuccess(false)}>
-                L'inscription a été réussie. Vous allez être redirigé vers la page de connexion.
+              <Alert variant="success">
+                L'inscription a été réussie. Vous allez être redirigé vers la
+                page de connexion.
               </Alert>
             )}
             <Form onSubmit={handleSubmit}>
@@ -97,11 +104,7 @@ const Register = () => {
                 />
               </Form.Group>
 
-              <Button
-                variant="primary"
-                type="submit"
-                className="w-100"
-              >
+              <Button variant="primary" type="submit" className="w-100">
                 {"S'inscrire"}
               </Button>
             </Form>
