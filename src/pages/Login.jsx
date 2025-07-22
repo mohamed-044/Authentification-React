@@ -1,11 +1,15 @@
 import { useState } from "react";
 import { Form, Button, Container, Card, Row, Col } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+
+  const navigate = useNavigate();
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     setFormData({
@@ -14,14 +18,43 @@ const LoginPage = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle login logic here
-    // Don't forget to handle errors, both for yourself (dev) and for the client (via a Bootstrap Alert):
-    //   - Show an error if credentials are invalid
-    //   - Show a generic error for all other cases
-    // On success, redirect to the Pro Offers page
-    console.log("Login submitted:", formData);
+    try {
+      const response = await fetch(
+        "https://offers-api.digistos.com/api/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+      const data = await response.json();
+      if (!response.ok) {
+        console.error("Erreur API:", response.status, data.message || data);
+        if (response.status === 404) {
+          setError(
+            "Identifiant inconnu. Veuillez vérifier votre adresse e-mail."
+          );
+        } else {
+          setError("Identifiant ou mot de passe incorrect.");
+        }
+        return;
+      }
+      if (!data.access_token) {
+        console.error("Token manquant dans la réponse :", data);
+        setError("Une erreur est survenue lors de la connexion.");
+        return;
+      }
+      console.log("Connexion réussie. Token :", data.access_token);
+      navigate("/offres/professionnelles");
+    } catch (error) {
+      console.error("Erreur JS :", error.message);
+      setError("Une erreur est survenue lors de la connexion.");
+    }
   };
 
   return (
@@ -30,6 +63,11 @@ const LoginPage = () => {
         <Col xs={12} sm={8} md={6} lg={4}>
           <Card className="p-4 shadow-lg">
             <h1 className="text-center mb-4">Se connecter</h1>
+            {error && (
+              <div className="alert alert-danger text-center mb-3" role="alert">
+                {error}
+              </div>
+            )}
             <Form onSubmit={handleSubmit}>
               <Form.Group className="mb-3" controlId="loginEmail">
                 <Form.Label>Email</Form.Label>
