@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Form,
   Button,
@@ -10,6 +11,7 @@ import {
 } from "react-bootstrap";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     name: "",
@@ -41,7 +43,7 @@ const Register = () => {
       if (!response.ok) {
         throw new Error(error.message || `Erreur HTTP: ${response.status}`);
       }
-      window.location.href = "/connexion";
+      navigate("/connexion");
     } catch (error) {
       setError("Une erreur est survenue lors de l'inscription. Vérifiez que le mot de passe contient plus de 8 caractères.");
       console.error("Erreur JS :", error.message);
