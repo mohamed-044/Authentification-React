@@ -39,8 +39,7 @@ const Register = () => {
         }
       );
       if (!response.ok) {
-        setError("Une erreur est survenue lors de l'inscription.");
-        return;
+        throw new Error("Une erreur est survenue lors de l'inscription.");
       }
       window.location.href = "/connexion";
     } catch (error) {
@@ -62,12 +61,6 @@ const Register = () => {
                 onClose={() => setError(null)}
               >
                 {error}
-              </Alert>
-            )}
-            {!error && (
-              <Alert variant="success">
-                L'inscription a été réussie. Vous allez être redirigé vers la
-                page de connexion.
               </Alert>
             )}
             <Form onSubmit={handleSubmit}>
