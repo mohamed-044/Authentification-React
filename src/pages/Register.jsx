@@ -9,11 +9,8 @@ const Register = () => {
     password: "",
   });
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
-  const [loading, setLoading] = useState(false);
 
-
-
+  
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -23,34 +20,28 @@ const Register = () => {
 
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError(null);
-    setSuccess(null);
-    setLoading(true);
-    try {
-      const response = await fetch("https://offers-api.digistos.com/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || `Erreur HTTP: ${response.status}`);
-      }
-      const data = await response.json();
-      setSuccess("Inscription réussie ! Vous pouvez maintenant vous connecter.");
-      setTimeout(() => {
-        window.location.href = "/connexion";
-      }, 2000);
-    } catch (error) {
-      setError(error.message || "Une erreur est survenue lors de l'inscription.");
-    } finally {
-      setLoading(false);
+  e.preventDefault();
+  setError(null);
+  try {
+    const response = await fetch("https://offers-api.digistos.com/api/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      setError(errorData.message || `Erreur HTTP: ${response.status}`);
+      return;
     }
-  };
+    window.location.href = "/connexion";
+  } catch (error) {
+    setError(error.message || "Une erreur est survenue lors de l'inscription.");
+    console.error("Erreur :", error.message);
+  }
+};
 
   return (
     <Container className="d-flex justify-content-center align-items-center min-vh-100">
@@ -59,13 +50,17 @@ const Register = () => {
           <Card className="p-4 shadow-lg">
             <h1 className="text-center mb-4">Créer un compte</h1>
             {error && (
-              <Alert variant="danger" dismissible onClose={() => setError(null)}>
+              <Alert
+                variant="danger"
+                dismissible
+                onClose={() => setError(null)}
+              >
                 {error}
               </Alert>
             )}
-            {success && (
-              <Alert variant="success" dismissible onClose={() => setSuccess(null)}>
-                {success}
+            {!error && (
+              <Alert variant="success" dismissible onClose={() => setShowSuccess(false)}>
+                L'inscription a été réussie. Vous allez être redirigé vers la page de connexion.
               </Alert>
             )}
             <Form onSubmit={handleSubmit}>
@@ -77,7 +72,6 @@ const Register = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  disabled={loading}
                 />
               </Form.Group>
 
@@ -89,7 +83,6 @@ const Register = () => {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  disabled={loading}
                 />
               </Form.Group>
 
@@ -101,12 +94,15 @@ const Register = () => {
                   value={formData.password}
                   onChange={handleChange}
                   required
-                  disabled={loading}
                 />
               </Form.Group>
 
-              <Button variant="primary" type="submit" className="w-100" disabled={loading}>
-                {loading ? "Inscription en cours..." : "S'inscrire"}
+              <Button
+                variant="primary"
+                type="submit"
+                className="w-100"
+              >
+                {"S'inscrire"}
               </Button>
             </Form>
           </Card>
