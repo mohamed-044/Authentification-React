@@ -16,10 +16,12 @@ const LoginPage = () => {
       ...formData,
       [e.target.name]: e.target.value,
     });
+    setError(null);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
     try {
       const response = await fetch(
         "https://offers-api.digistos.com/api/auth/login",
@@ -34,26 +36,25 @@ const LoginPage = () => {
       );
       const data = await response.json();
       if (!response.ok) {
-        console.error("Erreur API:", response.status, data.message || data);
-        if (response.status === 404) {
-          setError(
-            "Identifiant inconnu. Veuillez vérifier votre adresse e-mail."
-          );
-        } else {
-          setError("Identifiant ou mot de passe incorrect.");
-        }
-        return;
+        const error = new Error(data.message || "Erreur de connexion");
+        error.status = response.status;
+        throw error;
       }
       if (!data.access_token) {
-        console.error("Token manquant dans la réponse :", data);
-        setError("Une erreur est survenue lors de la connexion.");
-        return;
+        const error = new Error("Erreur de connexion");
+        error.status = 200;
+        throw error;
       }
-      console.log("Connexion réussie. Token :", data.access_token);
       navigate("/offres/professionnelles");
     } catch (error) {
-      console.error("Erreur JS :", error.message);
-      setError("Une erreur est survenue lors de la connexion.");
+      console.error("Erreur :", error.status || "?", error.message);
+      if (error.status === 404) {
+        setError("Identifiant incorrect.");
+      } else if (error.status === 401) {
+        setError("Identifiant ou mot de passe incorrect.");
+      } else {
+        setError("Une erreur est survenue.");
+      }
     }
   };
 
