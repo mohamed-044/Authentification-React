@@ -21,7 +21,6 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null);
     try {
       const response = await fetch(
         "https://offers-api.digistos.com/api/auth/login",
@@ -38,11 +37,6 @@ const LoginPage = () => {
       if (!response.ok) {
         const error = new Error(data.message || "Erreur de connexion");
         error.status = response.status;
-        throw error;
-      }
-      if (!data.access_token) {
-        const error = new Error("Erreur de connexion");
-        error.status = 200;
         throw error;
       }
       navigate("/offres/professionnelles");
