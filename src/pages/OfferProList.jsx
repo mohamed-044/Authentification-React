@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Spinner, Alert } from "react-bootstrap";
 import OfferList from "../components/OfferList.jsx";
+import { useSelector } from "react-redux";
 
 const OfferProList = () => {
   const [offers, setOffers] = useState([]);
