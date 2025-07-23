@@ -1,18 +1,18 @@
 import { Nav, Navbar, Container } from "react-bootstrap";
 import { NavLink } from "react-router";
-import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router';
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router";
 import "../assets/styles/Header.css";
 function Header() {
   const location = useLocation();
   const getValidToken = () => {
-  const auth = JSON.parse(localStorage.getItem("auth"));
-  const isValid = auth && new Date(auth.expiresAt) > new Date();
-  return isValid;
+    const auth = JSON.parse(localStorage.getItem("auth"));
+    const isValid = auth && new Date(auth.expiresAt) > new Date();
+    return isValid;
   };
   const [isConnected, setIsConnected] = useState(false);
   useEffect(() => {
-  setIsConnected(getValidToken());
+    setIsConnected(getValidToken());
   }, [location]);
   return (
     <Navbar bg="light" data-bs-theme="light">
@@ -28,19 +28,19 @@ function Header() {
             Offres Professionnelles
           </Nav.Link>
           {isConnected ? (
-          <Nav.Link as={NavLink} to="/deconnexion">
-            Déconnexion
-          </Nav.Link>
-        ) : (
-          <>
-            <Nav.Link as={NavLink} to="/inscription">
-              Inscription
+            <Nav.Link as={NavLink} to="/deconnexion">
+              Déconnexion
             </Nav.Link>
-            <Nav.Link as={NavLink} to="/connexion">
-              Connexion
-            </Nav.Link>
-          </>
-        )}
+          ) : (
+            <>
+              <Nav.Link as={NavLink} to="/inscription">
+                Inscription
+              </Nav.Link>
+              <Nav.Link as={NavLink} to="/connexion">
+                Connexion
+              </Nav.Link>
+            </>
+          )}
         </Nav>
       </Container>
     </Navbar>

@@ -15,8 +15,8 @@ function App() {
     <Routes>
       <Route element={<Layout />}>
         <Route element={<PrivateRoute />}>
-        <Route path="/deconnexion" element={<Logout />} />
-        <Route path="/offres/professionnelles" element={<OfferProList />} />
+          <Route path="/deconnexion" element={<Logout />} />
+          <Route path="/offres/professionnelles" element={<OfferProList />} />
         </Route>
         <Route path="/" element={<Home />} />
         <Route path="/inscription" element={<Register />} />

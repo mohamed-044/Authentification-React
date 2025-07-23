@@ -40,10 +40,15 @@ const LoginPage = () => {
         throw error;
       }
 
-      localStorage.setItem("auth", JSON.stringify({
-      token: data.access_token,
-      expiresAt: new Date(Date.now() + data.expires_in * 1000).toISOString()
-      }));
+      localStorage.setItem(
+        "auth",
+        JSON.stringify({
+          token: data.access_token,
+          expiresAt: new Date(
+            Date.now() + data.expires_in * 1000
+          ).toISOString(),
+        })
+      );
 
       navigate("/offres/professionnelles");
     } catch (error) {
