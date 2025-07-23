@@ -18,13 +18,13 @@ const Offer = () => {
           {
             headers: {
               Accept: "application/json",
-              Authorization : `Bearer ${token}`,
+              Authorization: `Bearer ${token}`,
             },
           }
         );
 
         const { data: offers, message } = await response.json();
-        
+
         if (!response.ok) {
           throw { status: response.status, message: message };
         }
