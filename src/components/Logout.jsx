@@ -1,6 +1,7 @@
 import { use, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../store/authSlice";
 
 const Logout = () => {
   const navigate = useNavigate();
@@ -11,11 +12,11 @@ const Logout = () => {
       try {
         if (token) {
           const response = await fetch(
-            "https://offers-api.digistos.com/api/logout",
+            "https://offers-api.digistos.com/api/auth/logout",
             {
               method: "POST",
               headers: {
-                "Content-Type": "application/json",
+                Accept: "application/json",
                 Authorization: `Bearer ${token}`,
               },
             }
@@ -33,7 +34,7 @@ const Logout = () => {
       } catch (error) {
         console.error(error.message);
       } finally {
-        dispatch(Logout());
+        dispatch(logout());
         navigate("/connexion");
       }
     };
