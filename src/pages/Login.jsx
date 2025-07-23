@@ -2,6 +2,7 @@ import { use, useState } from "react";
 import { Form, Button, Container, Card, Row, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { loginSuccess } from "../store/authSlice";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
