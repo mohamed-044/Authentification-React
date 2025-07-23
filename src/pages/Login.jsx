@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { use, useState } from "react";
 import { Form, Button, Container, Card, Row, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +11,7 @@ const LoginPage = () => {
 
   const navigate = useNavigate();
   const [error, setError] = useState(null);
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setFormData({
@@ -39,6 +41,16 @@ const LoginPage = () => {
         error.status = response.status;
         throw error;
       }
+
+      dispatch(
+        loginSuccess({
+          token: data.access_token,
+          expiresAt: new Date(
+            Date.now() + data.expires_in * 1000
+          ).toISOString(),
+        })
+      );
+
       navigate("/offres/professionnelles");
     } catch (error) {
       console.error("Erreur :", error.status || "?", error.message);
