@@ -1,5 +1,6 @@
 import { Nav, Navbar, Container } from "react-bootstrap";
 import { NavLink } from "react-router";
+import { useSelector } from "react-redux";
 import "../assets/styles/Header.css";
 function Header() {
   const auth = useSelector((state) => state.auth);
