@@ -7,6 +7,7 @@ const Offer = () => {
   const [offer, setOffer] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const token = useSelector((state) => state.auth.token);
 
   useEffect(() => {
     const fetchOffer = async () => {
@@ -16,7 +17,7 @@ const Offer = () => {
           {
             headers: {
               Accept: "application/json",
-              // Add Authorization token
+              Authorization : `Bearer ${token}`,
             },
           }
         );
