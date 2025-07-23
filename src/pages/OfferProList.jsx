@@ -8,7 +8,7 @@ const OfferProList = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchOfferPro = async () => {
       try {
         const response = await fetch(
           "https://offers-api.digistos.com/api/offers/pro",
@@ -38,7 +38,7 @@ const OfferProList = () => {
       }
     };
 
-    fetchProducts();
+    fetchOfferPro();
   }, []);
 
   if (loading) {
