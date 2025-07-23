@@ -16,7 +16,7 @@ const Offer = () => {
           {
             headers: {
               Accept: "application/json",
-              Authorization: `Bearer ${JSON.parse(localStorage.getItem("auth"))?.token}`,
+              // Add Authorization token
             },
           }
         );

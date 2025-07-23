@@ -8,14 +8,14 @@ const OfferProList = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchOfferPro = async () => {
+    const fetchProducts = async () => {
       try {
         const response = await fetch(
           "https://offers-api.digistos.com/api/offers/pro",
           {
             headers: {
               Accept: "application/json",
-              Authorization: `Bearer ${JSON.parse(localStorage.getItem("auth"))?.token}`,
+              // Add Authorization token
             },
           }
         );
@@ -38,7 +38,7 @@ const OfferProList = () => {
       }
     };
 
-    fetchOfferPro();
+    fetchProducts();
   }, []);
 
   if (loading) {
