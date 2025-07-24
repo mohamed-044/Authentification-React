@@ -7,7 +7,7 @@ const Logout = () => {
     const handleLogout = async () => {
       try {
         const response = await fetch(
-          "https://offers-api.digistos.com/api/logout",
+          "https://offers-api.digistos.com/api/auth/logout",
           {
             method: "POST",
             headers: {
