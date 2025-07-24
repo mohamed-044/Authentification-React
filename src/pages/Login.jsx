@@ -31,6 +31,7 @@ const LoginPage = () => {
             Accept: "application/json",
           },
           body: JSON.stringify(formData),
+          credentials: "include",
         }
       );
       const data = await response.json();
@@ -43,7 +44,6 @@ const LoginPage = () => {
       localStorage.setItem(
         "auth",
         JSON.stringify({
-          token: data.access_token,
           expiresAt: new Date(
             Date.now() + data.expires_in * 1000
           ).toISOString(),

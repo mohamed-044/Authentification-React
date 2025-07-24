@@ -5,14 +5,15 @@ import { useLocation } from "react-router";
 import "../assets/styles/Header.css";
 function Header() {
   const location = useLocation();
-  const getValidToken = () => {
-    const auth = JSON.parse(localStorage.getItem("auth"));
-    const isValid = auth && new Date(auth.expiresAt) > new Date();
-    return isValid;
-  };
   const [isConnected, setIsConnected] = useState(false);
+
   useEffect(() => {
-    setIsConnected(getValidToken());
+  const authData = JSON.parse(localStorage.getItem("auth"));
+  if (authData && new Date(authData.expiresAt) > new Date()) {
+  setIsConnected(true);
+  } else{
+  setIsConnected(false)
+  }
   }, [location]);
   return (
     <Navbar bg="light" data-bs-theme="light">
