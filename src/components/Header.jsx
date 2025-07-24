@@ -8,12 +8,12 @@ function Header() {
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-  const authData = JSON.parse(localStorage.getItem("auth"));
-  if (authData && new Date(authData.expiresAt) > new Date()) {
-  setIsConnected(true);
-  } else{
-  setIsConnected(false)
-  }
+    const authData = JSON.parse(localStorage.getItem("auth"));
+    if (authData && new Date(authData.expiresAt) > new Date()) {
+      setIsConnected(true);
+    } else {
+      setIsConnected(false);
+    }
   }, [location]);
   return (
     <Navbar bg="light" data-bs-theme="light">
